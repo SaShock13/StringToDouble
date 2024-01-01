@@ -8,7 +8,7 @@ while (true)
 
     if (stringNum != string.Empty)
     {
-        Console.WriteLine($"\nВаше число в цифровом формате : {ConvertStringToDouble(stringNum)}");
+        Console.WriteLine($"\nВаше число в формате double: {ConvertStringToDouble(stringNum)}");
         break;
     }
     
