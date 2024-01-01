@@ -8,7 +8,8 @@ while (true)
 
     if (stringNum != string.Empty)
     {
-        Console.WriteLine($"\nВаше число в формате double: {ConvertStringToDouble(stringNum)}");
+        double result = ConvertStringToDouble(stringNum);
+        Console.WriteLine($"\nВаше число в формате double: {(result>0?result:"Некорректно")}");
         break;
     }
     
@@ -16,38 +17,51 @@ while (true)
 Console.ReadLine();
 double ConvertStringToDouble(string num)
 {
+    bool isValid = true;
     double result;
     string[] parts = new string[2];
     string fractialString;
     parts = num.Split([',', '.']);
+    int integerNum=0;
+    double fractialNum=0;
     string integerString = parts[0];
+
     if (parts.Length==1)
     {
         fractialString = "0";
     }else  fractialString = parts[1];
-
-    int integerNum=0;
-    double fractialNum=0;
-    bool isValid = true;
-    Console.WriteLine($"Целая часть строка {integerString}, Дробная часть строка {fractialString}");
-
-    for (int i = 0,k= integerString.Length-1; i < integerString.Length; i++,k--)
-    {
-        int digit = Recognizing(integerString[k]);
-        if (digit < 10)
-        {
-            int multyplyer = 1;
-            for (int x = 0; x < i; x++)
-            {
-                multyplyer *= 10 ;
-            }
-            integerNum += (digit * multyplyer);
-
-        }
-        else { isValid = false; break; }
-        Console.WriteLine($"{integerNum}");
+   
+    if (parts.Length > 2)
+    { 
+        isValid = false;
     }
-    Console.WriteLine($"Целая часть : {integerNum}");
+
+
+    if (isValid)
+    {
+        Console.WriteLine($"Первая часть строка {integerString}, Вторая часть строка {fractialString}");
+        for (int i = 0, k = integerString.Length - 1; i < integerString.Length; i++, k--)
+        {
+            int digit = Recognizing(integerString[k]);
+            if (digit !=-1)
+            {
+                int multyplyer = 1;
+                for (int x = 0; x < i; x++)
+                {
+                    multyplyer *= 10;
+                }
+                integerNum += (digit * multyplyer);
+
+                Console.WriteLine($"{integerNum}");
+            }
+            else { isValid = false; break; }
+        }
+        if (isValid)
+        {
+
+                Console.WriteLine($"Целая часть : {integerNum}"); 
+        }
+    }
 
     Console.WriteLine("\n---------------");
     if (isValid)
@@ -63,12 +77,17 @@ double ConvertStringToDouble(string num)
                     multyplyer /= 10;
                 }
                 fractialNum += (digit * multyplyer);
-            }
-            Console.WriteLine($"{fractialNum}");
+                Console.WriteLine($"{fractialNum}");
+            } else { isValid = false; break; }
 
         }
+        if (isValid)
+        {
+
+            Console.WriteLine($"Дробная часть : {fractialNum}");
+        }
+        
     }
-    Console.WriteLine($"Дробная часть : {fractialNum}");
 
     
     if (!isValid)
